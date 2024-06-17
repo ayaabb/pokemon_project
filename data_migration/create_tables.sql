@@ -1,6 +1,5 @@
 -- SQL script to create the necessary tables
 
--- Create the Pokemon table
 CREATE TABLE IF NOT EXISTS Pokemon (
     id INT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,

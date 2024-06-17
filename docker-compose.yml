@@ -1,0 +1,61 @@
+version: '3.8'
+
+services:
+
+#  app:
+#    build: gateway
+#    container_name: fastapi_app
+#    depends_on:
+#      - pokemon
+#      - pokemon_images
+#      - pokemon_api
+#    ports:
+#      - "8000:8000"
+#    volumes:
+#      - ./pokemon/config.json:/app/config.json  # Mount config.json into the container
+
+#  pokemon:
+#    build: pokemon
+#    container_name: pokemon_server
+#    depends_on:
+#      - mysql
+#    ports:
+#      - "8001:8001"
+#    volumes:
+#          - ./pokemon/config.json:/app/config.json  # Mount config.json into the container
+
+#  mysql:
+#    image: mysql:latest
+#    container_name: mysql_container
+#    environment:
+#      MYSQL_ROOT_PASSWORD: ${config['database']['password']}
+#      MYSQL_DATABASE: ${config['database']['database']}
+#      MYSQL_USER: ${config['database']['user']}
+#      MYSQL_PASSWORD: ${config['database']['password']}
+#    ports:
+#      - "3306:3306"
+
+  pokemon_images:
+    build: pokemon_images
+    container_name: images
+    depends_on:
+      - mongodb
+    ports:
+      - "8002:8002"
+
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb_container
+    ports:
+      - "27017:27017"  # Expose MongoDB port
+    volumes:
+      - mongodb_data:/data/db  # Persist MongoDB data
+volumes:
+    mongodb_data:
+        driver: local
+
+#  pokemon_api:
+#    build: pokemon_api
+#    container_name: api_service
+#    ports:
+#      - "8003:8003"

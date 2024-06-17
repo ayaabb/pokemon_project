@@ -1,6 +1,6 @@
 import pytest
 from fastapi.testclient import TestClient
-from pokemon_api.server import server
+from pokemon.server import server
 
 client = TestClient(server)
 

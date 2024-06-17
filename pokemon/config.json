@@ -1,0 +1,10 @@
+{
+    "database": {
+        "host": "mysql",
+        "user": "root1",
+        "port": "3306",
+        "password": "123",
+        "database" : "pokemons"
+    }
+
+}
