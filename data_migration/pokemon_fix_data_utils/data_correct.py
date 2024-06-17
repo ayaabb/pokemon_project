@@ -26,4 +26,4 @@ def fix_all_pokemons_type(file_path):
 
 
 if __name__ == "__main__":
-    fix_all_pokemons_type("json_db/pokemons_data.json")
+    fix_all_pokemons_type("POKEMONS/pokemons_data.json")

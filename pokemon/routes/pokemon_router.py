@@ -46,7 +46,6 @@ def get_pokemons(type: str = Query(None), trainer_name: str = Query(None)):
     else:
         raise HTTPException(status_code=400, detail="Specify at least one query parameter: type or trainer_name.")
 
-
 """
 Delete a specific Pokémon from a trainer's collection.
 This endpoint removes a Pokémon from a trainer's list of owned Pokémon. It checks

@@ -1,6 +1,7 @@
+import json
+
 import requests
 
-base_url = "https://pokeapi.co/api/v2/pokemon/"
 
 
 def get_pokemon_types(pokemon_name):
@@ -13,8 +14,10 @@ def get_pokemon_types(pokemon_name):
     Returns:
     list: A list of types for the specified Pokémon. If the request fails, an exception is raised.
     """
+    with open('pokemon/service/constants.json') as f:
+        constants = json.load(f)
 
-    response = requests.get(f"{base_url}{pokemon_name.lower()}")
+    response = requests.get(f"{constants["pokapi_url"]}/pokemon/{pokemon_name.lower()}")
 
     # Raise an HTTPError if the request returned an unsuccessful status code
     response.raise_for_status()
