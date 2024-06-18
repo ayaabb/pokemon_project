@@ -1,16 +1,17 @@
 FROM python:3.9
 
-# Set the working directory in the container
+# Set the working directory inside the container
 WORKDIR /code
 
-# Copy requirements.txt to the container
-COPY requirements.txt /code/requirements.txt
+# Copy requirements file and install dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Install the dependencies
-RUN pip install --no-cache-dir --upgrade -r requirements.txt
+# Copy the configuration file
+#COPY config.env /code/config.env
 
-# Copy the entire pokemon directory to the container
-COPY . /code
+# Copy the rest of the application code
+COPY . .
 
 # Command to run the application
 CMD ["uvicorn", "server:server", "--host", "0.0.0.0", "--port", "8000", "--reload"]

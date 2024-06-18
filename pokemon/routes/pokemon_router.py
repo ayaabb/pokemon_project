@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Query, HTTPException
 
-from pokemon.Queries import pokemon, trainer
+from Queries import pokemon, trainer
 
-from pokemon.service.get_pokemon_info_utils import get_pokemon_info
+# from pokemon.service.get_pokemon_info_utils import get_pokemon_info
 
 
 router = APIRouter()
@@ -27,9 +27,7 @@ router = APIRouter()
 
 @router.get("/pokemons")
 def get_pokemons(type: str = Query(None), trainer_name: str = Query(None)):
-    if type and trainer_name:
-        raise HTTPException(status_code=400, detail="Specify either type or trainer_name, not both.")
-    elif type:
+    if type:
         if not pokemon.type_exists(type):
             raise HTTPException(status_code=404, detail=f"{type} type not found.")
         pokemons = pokemon.get_pokemons_of_type(type)
@@ -60,37 +58,37 @@ Raises:
 Returns:
 - dict: A message indicating the successful deletion of the Pokémon.
 """
-
-@router.patch("/pokemons/{pokemon_name}/trainers/{trainer_name}")
-def delete_pokemon_of_trainer(trainer_name: str, pokemon_name: str):
-        if not pokemon.pokemon_exists(pokemon_name):
-            raise HTTPException(status_code=404, detail=f"{pokemon_name} pokemon not found.")
-        if not trainer.trainer_exists(trainer_name):
-            raise HTTPException(status_code=404, detail=f"{trainer_name} trainer not found.")
-        if not trainer.trainer_has_pokemon(trainer_name, pokemon_name):
-            raise HTTPException(status_code=404, detail=f"{trainer_name} does not have {pokemon_name} pokemon")
-        pokemon.delete_pokemon_of_trainer(trainer_name, pokemon_name)
-        return {"message": "Pokemon deleted successfully"}
-
-
-"""
- Add a new Pokémon to the database.
- This endpoint adds a new Pokémon to the database if it does not already exist.
- It fetches the Pokémon information from an external source and inserts it into the database.
- Parameters:
- - pokemon_name: str - The name of the Pokémon to be added.
- Raises:
- - HTTPException: 409 if the Pokémon already exists in the database.
- - HTTPException: 404 if the Pokémon information cannot be found.
- Returns:
- - dict: A message indicating the successful addition of the Pokémon.
- """
-@router.post("/pokemons")
-def add_pokemon(pokemon_name: str):
-    if pokemon.pokemon_exists(pokemon_name):
-        raise HTTPException(status_code=409, detail=f"{pokemon_name} pokemon is already in the database.")
-    pokemon_info = get_pokemon_info(pokemon_name)
-    if not pokemon_info:
-        raise HTTPException(status_code=404, detail=f"{pokemon_name} not found.")
-    pokemon.insert_pokemon(pokemon_info)
-    return {"message": "Pokemon added successfully"}
+#
+# @router.patch("/pokemons/{pokemon_name}/trainers/{trainer_name}")
+# def delete_pokemon_of_trainer(trainer_name: str, pokemon_name: str):
+#         if not pokemon.pokemon_exists(pokemon_name):
+#             raise HTTPException(status_code=404, detail=f"{pokemon_name} pokemon not found.")
+#         if not trainer.trainer_exists(trainer_name):
+#             raise HTTPException(status_code=404, detail=f"{trainer_name} trainer not found.")
+#         if not trainer.trainer_has_pokemon(trainer_name, pokemon_name):
+#             raise HTTPException(status_code=404, detail=f"{trainer_name} does not have {pokemon_name} pokemon")
+#         pokemon.delete_pokemon_of_trainer(trainer_name, pokemon_name)
+#         return {"message": "Pokemon deleted successfully"}
+#
+#
+# """
+#  Add a new Pokémon to the database.
+#  This endpoint adds a new Pokémon to the database if it does not already exist.
+#  It fetches the Pokémon information from an external source and inserts it into the database.
+#  Parameters:
+#  - pokemon_name: str - The name of the Pokémon to be added.
+#  Raises:
+#  - HTTPException: 409 if the Pokémon already exists in the database.
+#  - HTTPException: 404 if the Pokémon information cannot be found.
+#  Returns:
+#  - dict: A message indicating the successful addition of the Pokémon.
+#  """
+# @router.post("/pokemons")
+# def add_pokemon(pokemon_name: str):
+#     if pokemon.pokemon_exists(pokemon_name):
+#         raise HTTPException(status_code=409, detail=f"{pokemon_name} pokemon is already in the database.")
+#     pokemon_info = get_pokemon_info(pokemon_name)
+#     if not pokemon_info:
+#         raise HTTPException(status_code=404, detail=f"{pokemon_name} not found.")
+#     pokemon.insert_pokemon(pokemon_info)
+#     return {"message": "Pokemon added successfully"}

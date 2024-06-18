@@ -2,36 +2,35 @@ version: '3.8'
 
 services:
 
-#  app:
-#    build: gateway
-#    container_name: fastapi_app
-#    depends_on:
-#      - pokemon
+  app:
+    build: gateway
+    container_name: fastapi_app
+    depends_on:
+      - pokemon
 #      - pokemon_images
 #      - pokemon_api
-#    ports:
-#      - "8000:8000"
 #    volumes:
-#      - ./pokemon/config.env:/app/config.env  # Mount config.env into the container
+#      - ./config.env:/code/config.env
+    ports:
+      - "8000:8000"
 
-#  pokemon:
-#    build: pokemon
-#    container_name: pokemon_server
-#    depends_on:
-#      - mysql
-#    ports:
-#      - "8001:8001"
+
+  pokemon:
+    build: pokemon
+    container_name: pokemon_container
 #    volumes:
-#          - ./pokemon/config.env:/pokemon/config.env  # Mount config.env into the container
-#
-#  mysql:
-#    image: mysql:latest
-#    container_name: mysql_container
-#    env_file:
-#      - ./config.env
-#    ports:
-#      - "3306:3306"
-#
+#      - ./config.env:/code/config.env
+    ports:
+      - "8001:8001"
+
+  mysql:
+    image: mysql:latest
+    container_name: mysql_container
+    env_file:
+      - ./config.env
+    ports:
+      - "3306:3306"
+
 #
 #  pokemon_images:
 #    build: pokemon_images
@@ -52,11 +51,11 @@ services:
 #      - mongodb_data:/data/db
 
 
-  pokemon_api:
-    build: pokemon_api
-    container_name: api_service
-    ports:
-      - "8003:8003"
+#  pokemon_api:
+#    build: pokemon_api
+#    container_name: api_service
+#    ports:
+#      - "8003:8003"
 #
 #volumes:
 #  mongodb_data:
