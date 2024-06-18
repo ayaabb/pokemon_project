@@ -32,24 +32,24 @@ services:
 #    ports:
 #      - "3306:3306"
 #
-
-  pokemon_images:
-    build: pokemon_images
-    container_name: images
-    depends_on:
-      - mongodb
-    ports:
-      - "8002:8002"
-    environment:
-      - MONGODB_URL=mongodb://mongodb_container:27017/
-
-  mongodb:
-    image: mongo:latest
-    container_name: mongodb_container
-    ports:
-      - "27017:27017"
-    volumes:
-      - mongodb_data:/data/db
+#
+#  pokemon_images:
+#    build: pokemon_images
+#    container_name: images
+#    depends_on:
+#      - mongodb
+#    ports:
+#      - "8002:8002"
+#    environment:
+#      - MONGODB_URL=mongodb://mongodb_container:27017/
+#
+#  mongodb:
+#    image: mongo:latest
+#    container_name: mongodb_container
+#    ports:
+#      - "27017:27017"
+#    volumes:
+#      - mongodb_data:/data/db
 
 
   pokemon_api:
@@ -57,7 +57,7 @@ services:
     container_name: api_service
     ports:
       - "8003:8003"
-
-volumes:
-  mongodb_data:
-    driver: local
+#
+#volumes:
+#  mongodb_data:
+#    driver: local

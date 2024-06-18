@@ -33,7 +33,7 @@ async def add_pokemon_image(id: int):
         fs = gridfs.GridFS(db)
         file_object = fs.find_one({"_id": id})
         if not file_object:
-            image = requests.get(f'http://api_service:8003/pokemon_images/{id}')
+            image = requests.get(f'http://api_service:8003/pokemon_api/images/{id}')
             fs.put(image.content, _id=id)
             return {"message": "Image added successfully"}
         raise HTTPException(status_code=409, detail="Image already exists")

@@ -8,9 +8,9 @@ from starlette.responses import StreamingResponse
 
 load_dotenv(dotenv_path='constants.env')
 router = APIRouter()
-api_image_pokemon_url = os.getenv("pokapi_url")
+api_image_pokemon_url = os.getenv("images_url")
 
-@router.get("/pokemon_images/{id}")
+@router.get("/pokemon_api/images/{id}")
 def get_pokemon_image_using_api(id: int):
     try:
 
