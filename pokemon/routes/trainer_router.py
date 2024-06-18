@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException
-from Queries import pokemon, trainer
+from pokemon.Queries import pokemon, trainer
 
 router = APIRouter()
 

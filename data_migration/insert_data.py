@@ -1,6 +1,6 @@
 import json
 
-from Queries import database
+from pokemon.Queries import database
 
 
 '''
@@ -92,9 +92,11 @@ Inserts all the data in the json files to MySql database
 
 def insert_data():
     # Load JSON data
-    with open('POKEMONS/pokemons_data.json') as file:
-        data = json.load(file)
-
+    try:
+        with open('data_migration/POKEMONS/pokemons_data.json') as file:
+            data = json.load(file)
+    except FileNotFoundError as e:
+        print(e)
     # Connect to MySQL database
     connection = database.connect_to_database()
 

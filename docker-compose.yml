@@ -12,7 +12,7 @@ services:
 #    ports:
 #      - "8000:8000"
 #    volumes:
-#      - ./pokemon/config.json:/app/config.json  # Mount config.json into the container
+#      - ./pokemon/config.env:/app/config.env  # Mount config.env into the container
 
 #  pokemon:
 #    build: pokemon
@@ -22,18 +22,16 @@ services:
 #    ports:
 #      - "8001:8001"
 #    volumes:
-#          - ./pokemon/config.json:/app/config.json  # Mount config.json into the container
-
+#          - ./pokemon/config.env:/pokemon/config.env  # Mount config.env into the container
+#
 #  mysql:
 #    image: mysql:latest
 #    container_name: mysql_container
-#    environment:
-#      MYSQL_ROOT_PASSWORD: ${config['database']['password']}
-#      MYSQL_DATABASE: ${config['database']['database']}
-#      MYSQL_USER: ${config['database']['user']}
-#      MYSQL_PASSWORD: ${config['database']['password']}
+#    env_file:
+#      - ./config.env
 #    ports:
 #      - "3306:3306"
+#
 
   pokemon_images:
     build: pokemon_images
@@ -42,20 +40,24 @@ services:
       - mongodb
     ports:
       - "8002:8002"
+    environment:
+      - MONGODB_URL=mongodb://mongodb_container:27017/
 
   mongodb:
     image: mongo:latest
     container_name: mongodb_container
     ports:
-      - "27017:27017"  # Expose MongoDB port
+      - "27017:27017"
     volumes:
-      - mongodb_data:/data/db  # Persist MongoDB data
-volumes:
-    mongodb_data:
-        driver: local
+      - mongodb_data:/data/db
 
-#  pokemon_api:
-#    build: pokemon_api
-#    container_name: api_service
-#    ports:
-#      - "8003:8003"
+
+  pokemon_api:
+    build: pokemon_api
+    container_name: api_service
+    ports:
+      - "8003:8003"
+
+volumes:
+  mongodb_data:
+    driver: local

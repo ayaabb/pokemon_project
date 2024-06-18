@@ -14,7 +14,7 @@ def get_pokemon_types(pokemon_name):
     Returns:
     list: A list of types for the specified Pokémon. If the request fails, an exception is raised.
     """
-    with open('pokemon/service/constants.json') as f:
+    with open('pokemon/service/constants.env') as f:
         constants = json.load(f)
 
     response = requests.get(f"{constants["pokapi_url"]}/pokemon/{pokemon_name.lower()}")

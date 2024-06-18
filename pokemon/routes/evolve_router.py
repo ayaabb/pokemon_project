@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException
-from Queries import trainer, pokemon
-from service.evolve_utils import get_evolved_pokemon
-from service.get_pokemon_info_utils import get_pokemon_info
+from pokemon.Queries import trainer, pokemon
+from pokemon.service.evolve_utils import get_evolved_pokemon
+from pokemon.service.get_pokemon_info_utils import get_pokemon_info
 
 router = APIRouter()
 

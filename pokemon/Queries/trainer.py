@@ -1,4 +1,4 @@
-from service.get_pokemon_info_utils import  get_pokemon_info
+from pokemon.service.get_pokemon_info_utils import  get_pokemon_info
 from . import database
 
 
