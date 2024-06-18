@@ -22,7 +22,7 @@ from dotenv import load_dotenv
 load_dotenv('config.env')
 
 def connect_to_database():
-
+        print("******************",os.getenv('MYSQL_HOST'))
         return mysql.connector.connect(
             host=os.getenv('MYSQL_HOST'),
             user=os.getenv('MYSQL_USER'),
