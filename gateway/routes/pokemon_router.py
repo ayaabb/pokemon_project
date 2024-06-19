@@ -24,4 +24,16 @@ def add_pokemon(pokemon_name: str):
     response = requests.post(f'http://pokemon_container:8001/pokemons?pokemon_name={pokemon_name}')
     if response.status_code != 200:
         raise HTTPException(status_code=response.status_code, detail=response.content.decode())
+    image_response = requests.post(f'http://images:8002/pokemon_images/{pokemon_name}')
+    if image_response.status_code != 200:
+        raise HTTPException(status_code=image_response.status_code, detail=image_response.content.decode())
+
+    return response.json()
+
+
+@router.patch("/pokemons/{pokemon_name}/trainers/{trainer_name}")
+def delete_pokemon_of_trainer(trainer_name: str, pokemon_name: str):
+    response = requests.patch(f'http://pokemon_container:8001/pokemons/{pokemon_name}/trainers/{trainer_name}')
+    if response.status_code != 200:
+        raise HTTPException(status_code=response.status_code, detail=response.content.decode())
     return response.json()

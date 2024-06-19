@@ -26,12 +26,20 @@ async def get_pokemon_image(id: int):
         return (HTTPException(status_code=500, detail=str(e)))
 
 
-@server.post("/pokemon_images")
-async def add_pokemon_image(id: int):
+@server.post("/pokemon_images/{pokemon_name}")
+async def add_pokemon_image(pokemon_name: str):
     try:
         db = mongodb["pokemons"]
         fs = gridfs.GridFS(db)
+
+        info_response = requests.get(f'http://pokemon_container:8001/pokemons/{pokemon_name}')
+        info_json = info_response.json()
+        id = info_json[0]
+        if fs.exists({"_id": id}):
+            return {"message": "Image already exists"}
+
         image_response = await get_pokemon_image(id)
+
         if image_response.status_code == 404:
             image = requests.get(f'http://api_service:8003/pokemon_api/images/{id}')
             if image.status_code == 200:
@@ -39,6 +47,11 @@ async def add_pokemon_image(id: int):
                 return {"message": "Image added successfully"}
             else:
                 raise HTTPException(status_code=image.status_code, detail="Failed to fetch image from external service")
-        return {"message": "Image already exists"}
+
+    except HTTPException as http_exception:
+        raise http_exception
+
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+    return {"message": "Image already exists"}

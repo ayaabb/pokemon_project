@@ -7,8 +7,8 @@ services:
     container_name: fastapi_app
     depends_on:
       - pokemon
-#      - pokemon_images
-#      - pokemon_api
+      - pokemon_images
+      - pokemon_api
 #    volumes:
 #      - ./config.env:/code/config.env
     ports:
@@ -31,7 +31,7 @@ services:
     ports:
       - "3306:3306"
 
-
+#
   pokemon_images:
     build: pokemon_images
     container_name: images

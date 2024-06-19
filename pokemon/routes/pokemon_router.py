@@ -61,18 +61,27 @@ Returns:
 - dict: A message indicating the successful deletion of the Pokémon.
 """
 
-# @router.patch("/pokemons/{pokemon_name}/trainers/{trainer_name}")
-# def delete_pokemon_of_trainer(trainer_name: str, pokemon_name: str):
-#         if not pokemon.pokemon_exists(pokemon_name):
-#             raise HTTPException(status_code=404, detail=f"{pokemon_name} pokemon not found.")
-#         if not trainer.trainer_exists(trainer_name):
-#             raise HTTPException(status_code=404, detail=f"{trainer_name} trainer not found.")
-#         if not trainer.trainer_has_pokemon(trainer_name, pokemon_name):
-#             raise HTTPException(status_code=404, detail=f"{trainer_name} does not have {pokemon_name} pokemon")
-#         pokemon.delete_pokemon_of_trainer(trainer_name, pokemon_name)
-#         return {"message": "Pokemon deleted successfully"}
-#
-#
+
+@router.get("/pokemons/{pokemon_name}")
+def get_pokemon_info(pokemon_name: str):
+    if not pokemon.pokemon_exists(pokemon_name):
+        raise HTTPException(status_code=404, detail=f"{pokemon_name} pokemon not found.")
+    info = pokemon.get_info(pokemon_name)
+    return info
+
+
+@router.patch("/pokemons/{pokemon_name}/trainers/{trainer_name}")
+def delete_pokemon_of_trainer(trainer_name: str, pokemon_name: str):
+    if not pokemon.pokemon_exists(pokemon_name):
+        raise HTTPException(status_code=404, detail=f"{pokemon_name} pokemon not found.")
+    if not trainer.trainer_exists(trainer_name):
+        raise HTTPException(status_code=404, detail=f"{trainer_name} trainer not found.")
+    if not trainer.trainer_has_pokemon(trainer_name, pokemon_name):
+        raise HTTPException(status_code=404, detail=f"{trainer_name} does not have {pokemon_name} pokemon")
+    pokemon.delete_pokemon_of_trainer(trainer_name, pokemon_name)
+    return {"message": "Pokemon deleted successfully"}
+
+
 """
  Add a new Pokémon to the database.
  This endpoint adds a new Pokémon to the database if it does not already exist.
@@ -101,10 +110,5 @@ def add_pokemon(pokemon_name: str):
     pokemon_info_str = pokemon_info_content.decode('utf-8')
     pokemon_info = json.loads(pokemon_info_str)
     insert_message = pokemon.insert_pokemon(pokemon_info)
-    pokemon_id = pokemon_info[0]
-
-    image_response = requests.post(f'http://images:8002/pokemon_images?id={int(pokemon_id)}')
-    if 'Successfully' in insert_message and image_response.status_code != 200:
-        raise HTTPException(status_code=image_response.status_code, detail=image_response.content.decode())
 
     return {"message": insert_message}

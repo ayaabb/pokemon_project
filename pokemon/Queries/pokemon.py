@@ -10,6 +10,7 @@ def get_pokemons_of_type(type_name):
     result = database.execute_and_fetch_query(connection, query, (type_name,))
     return result
 
+
 def delete_pokemon_of_trainer(trainer_name, pokemon_name):
     connection = database.connect_to_database()
     query = """
@@ -18,6 +19,7 @@ def delete_pokemon_of_trainer(trainer_name, pokemon_name):
     AND trainer_name = %s ;
     """
     database.execute_query(connection, query, (pokemon_name, trainer_name,))
+
 
 def get_trainers_by_pokemon(name):
     connection = database.connect_to_database()
@@ -29,9 +31,10 @@ def get_trainers_by_pokemon(name):
     WHERE p.name = %s;
     """
     result = database.execute_and_fetch_query(connection, query, (name,))
-    
+
     return result
-    
+
+
 def get_pokemons_by_trainer(name):
     connection = database.connect_to_database()
 
@@ -44,6 +47,7 @@ def get_pokemons_by_trainer(name):
     result = database.execute_and_fetch_query(connection, query, (name,))
     return result
 
+
 def type_exists(type):
     connection = database.connect_to_database()
     query = """
@@ -53,6 +57,7 @@ def type_exists(type):
     """
     result = database.execute_and_fetch_query(connection, query, (type,))
     return len(result) != 0
+
 
 def pokemon_exists(pokemon_name):
     connection = database.connect_to_database()
@@ -66,13 +71,11 @@ def pokemon_exists(pokemon_name):
 
     return len(result) != 0
 
+
 def insert_pokemon(pokemon_info):
     connection = database.connect_to_database()
     try:
-        # Start a transaction
         cursor = connection.cursor()
-
-        # Insert into pokemon table
         cursor.execute(
             "INSERT IGNORE INTO Pokemon (id, name, height, weight) VALUES (%s, %s, %s, %s)",
             (pokemon_info[0], pokemon_info[1], pokemon_info[2], pokemon_info[3])
@@ -80,7 +83,7 @@ def insert_pokemon(pokemon_info):
 
         # Insert into pokemonType table
         types = pokemon_info[4]
-        print("***********************",types)
+        print("***********************", types)
         for type_ in types:
             cursor.execute(
                 "INSERT IGNORE INTO PokemonType (pokemon_id, type_name) VALUES (%s, %s)",
@@ -95,3 +98,16 @@ def insert_pokemon(pokemon_info):
         return f"Failed to insert Pokémon '{pokemon_info[1]}' with ID '{pokemon_info[0]}': {str(e)}"
     finally:
         connection.close()
+
+
+def get_info(pokemon_name):
+    connection = database.connect_to_database()
+    query = """
+       SELECT * FROM Pokemon WHERE name=%s;
+       """
+    result = database.execute_and_fetch_query(connection, query, (pokemon_name,))
+
+
+    return result
+
+
