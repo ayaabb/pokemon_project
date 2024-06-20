@@ -37,3 +37,5 @@ def delete_pokemon_of_trainer(trainer_name: str, pokemon_name: str):
     if response.status_code != 200:
         raise HTTPException(status_code=response.status_code, detail=response.content.decode())
     return response.json()
+
+

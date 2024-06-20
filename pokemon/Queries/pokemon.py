@@ -83,7 +83,6 @@ def insert_pokemon(pokemon_info):
 
         # Insert into pokemonType table
         types = pokemon_info[4]
-        print("***********************", types)
         for type_ in types:
             cursor.execute(
                 "INSERT IGNORE INTO PokemonType (pokemon_id, type_name) VALUES (%s, %s)",

@@ -1,23 +1,26 @@
-# from service.get_pokemon_info_utils import  get_pokemon_info
 from . import database
 
 
-# def insert_into_ownership(pokemon_name, trainer_name):
-#     connection = database.connect_to_database()
-#     try:
-#         pokemon_info = get_pokemon_info(pokemon_name)
-#
-#         database.execute_query(connection,
-#                                "INSERT INTO ownership (trainer_name, pokemon_id) VALUES (%s, %s)",
-#                                (trainer_name, pokemon_info[0])
-#                                )
-#         connection.commit()
-#         return f"Successfully inserted {pokemon_name} for trainer {trainer_name}."
-#     except Exception as e:
-#         connection.rollback()
-#         return f"Failed to insert {pokemon_name} for trainer {trainer_name}: {str(e)}"
-#     finally:
-#         connection.close()
+def insert_into_ownership(pokemon_name, trainer_name):
+    connection = database.connect_to_database()
+    try:
+        database.execute_query(
+            connection,
+            """
+            INSERT INTO Ownership (trainer_name, pokemon_id)
+            SELECT %s, p.id
+            FROM Pokemon p
+            WHERE p.name = %s
+            """,
+            (trainer_name, pokemon_name)
+        )
+        connection.commit()
+        return f"Successfully inserted {pokemon_name} for trainer {trainer_name}."
+    except Exception as e:
+        connection.rollback()
+        return f"Failed to insert {pokemon_name} for trainer {trainer_name}: {str(e)}"
+    finally:
+        connection.close()
 
 
 def trainer_has_pokemon(trainer_name, pokemon_name):

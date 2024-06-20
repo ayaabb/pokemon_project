@@ -98,17 +98,19 @@ def delete_pokemon_of_trainer(trainer_name: str, pokemon_name: str):
 
 @router.post("/pokemons")
 def add_pokemon(pokemon_name: str):
-    if pokemon.pokemon_exists(pokemon_name):
-        raise HTTPException(status_code=409, detail=f"{pokemon_name} pokemon is already in the database.")
+    try:
+        if pokemon.pokemon_exists(pokemon_name):
+            raise HTTPException(status_code=409, detail=f"{pokemon_name} pokemon is already in the database.")
 
-    pokemon_info_response = requests.get(f'http://api_service:8003/pokemon_api/info/{pokemon_name}')
+        pokemon_info_response = requests.get(f'http://api_service:8003/pokemon_api/info/{pokemon_name}')
 
-    if pokemon_info_response.status_code != 200:
-        raise HTTPException(status_code=404, detail=f"{pokemon_name} not found.")
+        if pokemon_info_response.status_code != 200:
+            raise HTTPException(status_code=404, detail=f"{pokemon_name} not found.")
 
-    pokemon_info_content = pokemon_info_response.content
-    pokemon_info_str = pokemon_info_content.decode('utf-8')
-    pokemon_info = json.loads(pokemon_info_str)
-    insert_message = pokemon.insert_pokemon(pokemon_info)
-
-    return {"message": insert_message}
+        pokemon_info = pokemon_info_response.json()
+        insert_message = pokemon.insert_pokemon(pokemon_info)
+        return {"message": insert_message}
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
