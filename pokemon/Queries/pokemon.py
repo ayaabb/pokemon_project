@@ -73,6 +73,7 @@ def pokemon_exists(pokemon_name):
 
 
 def insert_pokemon(pokemon_info):
+    print("$$$$$$$$$$$$$",pokemon_info)
     connection = database.connect_to_database()
     try:
         cursor = connection.cursor()

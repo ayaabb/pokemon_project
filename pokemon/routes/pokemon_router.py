@@ -112,5 +112,3 @@ def add_pokemon(pokemon_name: str):
         return {"message": insert_message}
     except HTTPException:
         raise
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))

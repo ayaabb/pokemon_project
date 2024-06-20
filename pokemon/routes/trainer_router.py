@@ -5,25 +5,25 @@ from .pokemon_router import add_pokemon
 
 router = APIRouter()
 
-# """
-# Get a list of trainers who own a specific Pokémon.
-# Args:
-#     pokemon_name (str): The name of the Pokémon.
-# Returns:
-#     List[str]: A list of trainer names.
-# Raises:
-#     HTTPException: If no trainers are found for the given Pokémon.
-# """
-# @router.get("/trainers")
-# def get_trainers_by_pokemon(pokemon_name: str):
-#     if not pokemon.pokemon_exists(pokemon_name):
-#         raise HTTPException(status_code=404, detail=f"{pokemon_name} pokemon not found.")
-#
-#     trainers = pokemon.get_trainers_by_pokemon(pokemon_name)
-#     if len(trainers) < 1:
-#         raise HTTPException(status_code=404, detail="No trainers found for the given Pokémon.")
-#     return trainers
-#
+"""
+Get a list of trainers who own a specific Pokémon.
+Args:
+    pokemon_name (str): The name of the Pokémon.
+Returns:
+    List[str]: A list of trainer names.
+Raises:
+    HTTPException: If no trainers are found for the given Pokémon.
+"""
+@router.get("/trainers")
+def get_trainers_by_pokemon(pokemon_name: str):
+    if not pokemon.pokemon_exists(pokemon_name):
+        raise HTTPException(status_code=404, detail=f"{pokemon_name} pokemon not found.")
+
+    trainers = pokemon.get_trainers_by_pokemon(pokemon_name)
+    if len(trainers) < 1:
+        raise HTTPException(status_code=404, detail="No trainers found for the given Pokémon.")
+    return trainers
+
 """
 Add a Pokémon to a trainer's collection.
 Args:
@@ -59,5 +59,3 @@ def add_pokemon_to_trainer(trainer_name: str, pokemon_name: str):
 
     except HTTPException:
         raise
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))

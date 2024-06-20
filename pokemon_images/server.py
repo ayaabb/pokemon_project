@@ -21,9 +21,9 @@ async def get_pokemon_image(id: int):
             file_content = file_object.read()
             return StreamingResponse(io.BytesIO(file_content), media_type="image/png")
         else:
-            return HTTPException(status_code=404, detail="Image not found")
-    except Exception as e:
-        return (HTTPException(status_code=500, detail=str(e)))
+            raise HTTPException(status_code=404, detail="Image not found")
+    except HTTPException as e:
+        raise e
 
 
 @server.post("/pokemon_images/{pokemon_name}")
@@ -33,6 +33,8 @@ async def add_pokemon_image(pokemon_name: str):
         fs = gridfs.GridFS(db)
 
         info_response = requests.get(f'http://pokemon_container:8001/pokemons/{pokemon_name}')
+        if info_response.status_code != 200:
+            raise HTTPException(status_code=info_response.status_code, detail=info_response.text)
         info_json = info_response.json()
         id = info_json[0]
         if fs.exists({"_id": id}):
@@ -48,9 +50,5 @@ async def add_pokemon_image(pokemon_name: str):
             else:
                 raise HTTPException(status_code=image.status_code, detail="Failed to fetch image from external service")
 
-    except HTTPException as http_exception:
-        raise http_exception
-
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-
+    except HTTPException as e:
+        raise e

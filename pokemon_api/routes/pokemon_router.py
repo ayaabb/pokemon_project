@@ -23,16 +23,9 @@ def get_pokemon_info_using_api(pokemon_name: str):
         for d in data["types"]:
             types.append(d["type"]["name"])
 
-        pokemon_info = {
-            "id": data["id"],
-            "name": data["species"]["name"],
-            "height": data["height"],
-            "weight": data["weight"],
-            "types": types
-        }
+        pokemon_info = [data["id"], data["species"]["name"], data["height"], data["weight"], types]
 
         return pokemon_info
 
     except requests.RequestException as e:
         raise HTTPException(status_code=500, detail=f"Failed to fetch data from external API: {str(e)}")
-
