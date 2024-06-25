@@ -5,6 +5,7 @@ CREATE TABLE IF NOT EXISTS Pokemon (
     name VARCHAR(255) NOT NULL,
     height FLOAT NOT NULL,
     weight FLOAT NOT NULL
+
 );
 
 -- Create the Type table

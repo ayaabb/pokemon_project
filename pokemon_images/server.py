@@ -40,15 +40,12 @@ async def add_pokemon_image(pokemon_name: str):
         if fs.exists({"_id": id}):
             return {"message": "Image already exists"}
 
-        image_response = await get_pokemon_image(id)
-
-        if image_response.status_code == 404:
-            image = requests.get(f'http://api_service:8003/pokemon_api/images/{id}')
-            if image.status_code == 200:
-                fs.put(image.content, _id=id)
-                return {"message": "Image added successfully"}
-            else:
-                raise HTTPException(status_code=image.status_code, detail="Failed to fetch image from external service")
+        image = requests.get(f'http://api_service:8003/pokemon_api/images/{id}')
+        if image.status_code == 200:
+            fs.put(image.content, _id=id)
+            return {"message": "Image added successfully"}
+        else:
+            raise HTTPException(status_code=image.status_code, detail="Failed to fetch image from external service")
 
     except HTTPException as e:
         raise e

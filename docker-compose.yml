@@ -31,7 +31,7 @@ services:
     ports:
       - "3306:3306"
 
-#
+
   pokemon_images:
     build: pokemon_images
     container_name: images

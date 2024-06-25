@@ -1,2 +1,2 @@
 from .pokemon_router import *
-from .trainer_router import *
+from .images_router import *
